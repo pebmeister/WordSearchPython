@@ -165,7 +165,7 @@ def main():
     parser.add_argument('-rows', dest='rows', type=int, required=True)
     parser.add_argument('-tries', dest='tries', type=int, default=1, required=False)
     parser.add_argument('-margin', dest='margin', type=int, default=12, required=False)
-    parser.add_argument('-words', dest="words", nargs='+', type=str, required=True)
+    parser.add_argument(dest="words", nargs='+', type=str)
 
     # parse args
     args = parser.parse_args()
