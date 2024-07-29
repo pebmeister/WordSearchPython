@@ -79,7 +79,7 @@ class wordsearch:
     # -------------------------------------------------------------
 
     # place a word in puzzle
-    # must first call wordfts
+    # must first call wordfits
     def place_word(self, word, row, col, direction):
         rinc = self.row_col_offsets[direction][0]
         cinc = self.row_col_offsets[direction][1]
@@ -90,7 +90,7 @@ class wordsearch:
 
     # -------------------------------------------------------------
 
-    # add one word to the board in a randon location and direction
+    # add one word to the board in a random location and direction
     def add_word(self, word):
 
         random.shuffle(self.row_array)
@@ -127,8 +127,10 @@ class wordsearch:
     # -------------------------------------------------------------
 
     # print the board
-    def print_board(self):
+    def print_board(self, margin):
         for row in range(self.rows):
+            for i in range(margin):
+                print('', end=' ');
             for col in range(self.cols):
                 print(self.board[row][col], end= ' ')
             print()
@@ -155,15 +157,15 @@ class wordsearch:
     # -------------------------------------------------------------
 def main():
 
-
     # create parser
     descStr = "This program creates a wordsearch."
     parser = argparse.ArgumentParser(prog='wordsearch', description=descStr)
     # add expected arguments
-    parser.add_argument('--cols', dest='cols', type=int, required=True)
-    parser.add_argument('--rows', dest='rows', type=int, required=True)
-    parser.add_argument('--tries', dest='tries', type=int, default=1, required=False)
-    parser.add_argument('--words', dest="words", nargs='+', type=str, required=True)
+    parser.add_argument('-cols', dest='cols', type=int, required=True)
+    parser.add_argument('-rows', dest='rows', type=int, required=True)
+    parser.add_argument('-tries', dest='tries', type=int, default=1, required=False)
+    parser.add_argument('-margin', dest='margin', type=int, default=12, required=False)
+    parser.add_argument('-words', dest="words", nargs='+', type=str, required=True)
 
     # parse args
     args = parser.parse_args()
@@ -178,7 +180,7 @@ def main():
         if not ws.error:
             ws.fill_blanks()
             print()
-            ws.print_board()
+            ws.print_board(args.margin)
             print()
             print()
             ws.print_words()
