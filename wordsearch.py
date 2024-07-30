@@ -45,12 +45,12 @@ class wordsearch:
     # -------------------------------------------------------------
 
     def fill_blanks(self):
-        list_upper = list(map(chr, range(65, 91)))
+        list_upper = list(map(chr, range(ord('A'), ord('Z'))))
         for row in range(self.rows):
             for col in range(self.cols):
                 if self.board[row][col] == '*':
-                    chindex = random.randrange(26)
-                    self.board[row][col] = list_upper[chindex]
+                    index = random.randrange(len(list_upper))
+                    self.board[row][col] = list_upper[index]
 
     # -------------------------------------------------------------
 
@@ -67,7 +67,7 @@ class wordsearch:
                 return False
             if cc < 0 or cc >= self.cols:
                 return False
-            c = self.board[rr][cc];
+            c = self.board[rr][cc]
             if ch != c and c != '*':
                 return False
 
@@ -130,25 +130,25 @@ class wordsearch:
     def print_board(self, margin):
         for row in range(self.rows):
             for i in range(margin):
-                print('', end=' ');
+                print('', end=' ')
             for col in range(self.cols):
                 print(self.board[row][col], end= ' ')
             print()
 
     # -------------------------------------------------------------
 
-    def print_words(self):
+    def print_words(self, word_width, num_columns):
         # get the length of the longest word to make sure all words fit
         srt_words = np.array(sorted(self.words, key=len, reverse=True))
-        sz = len(srt_words[0]);
+        sz = len(srt_words[0])
 
         col = 0
         for word in self.words:
-            l = sz + 3 - len(word)
-            print(word, end="")
+            l = word_width - len(word)
+            print(word, end='')
             for i in range(l):
                 print(' ', end='')
-            if col == 3:
+            if col == num_columns -1:
                 print()
                 col = 0
                 continue
@@ -156,16 +156,17 @@ class wordsearch:
 
     # -------------------------------------------------------------
 def main():
-
     # create parser
     descStr = "This program creates a wordsearch."
     parser = argparse.ArgumentParser(prog='wordsearch', description=descStr)
     # add expected arguments
-    parser.add_argument('-cols', dest='cols', type=int, required=True)
-    parser.add_argument('-rows', dest='rows', type=int, required=True)
-    parser.add_argument('-tries', dest='tries', type=int, default=1, required=False)
-    parser.add_argument('-margin', dest='margin', type=int, default=12, required=False)
-    parser.add_argument(dest="words", nargs='+', type=str)
+    parser.add_argument('-cols', dest='cols', type=int, required=True, help='number of columns')
+    parser.add_argument('-rows', dest='rows', type=int, required=True, help='number of rows')
+    parser.add_argument('-tries', dest='tries', type=int, default=1, required=False, help='max number of attempts to make puzzle')
+    parser.add_argument('-margin', dest='margin', type=int, default=12, required=False, help='left margin for puzzle')
+    parser.add_argument('-ww', dest='word_width', type=int, default=20, required=False, help='width for column of word list')
+    parser.add_argument('-wc', dest='word_cols', type=int, default=4, required=False, help='number of columns for word list')
+    parser.add_argument(dest="words", nargs='+', type=str, help='words to add')
 
     # parse args
     args = parser.parse_args()
@@ -183,7 +184,8 @@ def main():
             ws.print_board(args.margin)
             print()
             print()
-            ws.print_words()
+            ws.print_words(args.word_width, args.word_cols)
+            print()
             return
 
         # get the word that failed
