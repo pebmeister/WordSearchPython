@@ -6,6 +6,8 @@ Created on Mon Jul 22 13:20:11 2024
 """
 import random
 import argparse
+
+import numpy
 import numpy as np
 
 
@@ -13,7 +15,7 @@ class WordSearch:
     failed_word: str
 
     # initialize
-    def __init__(self, rows: int, cols: int, words: list):
+    def __init__(self, rows: int, cols: int, words: list) -> None:
         self.rows = rows
         self.cols = cols
         self.words = np.array(words)
@@ -40,7 +42,7 @@ class WordSearch:
 
     # -------------------------------------------------------------
 
-    def clear_board(self):
+    def clear_board(self) -> None:
         # * represents a blank spot in the board
         for row in range(self.rows):
             for col in range(self.cols):
@@ -48,7 +50,7 @@ class WordSearch:
 
     # -------------------------------------------------------------
 
-    def fill_blanks(self):
+    def fill_blanks(self) -> None:
         list_upper = list(map(chr, range(ord('A'), ord('Z'))))
         for row in range(self.rows):
             for col in range(self.cols):
@@ -91,7 +93,7 @@ class WordSearch:
 
     # place a word in puzzle
     # must first call word_fits
-    def place_word(self, word, row, col, direction):
+    def place_word(self, word: str, row: int, col: int, direction: int) -> None:
         row_inc = self.row_col_offsets[direction][0]
         col_inc = self.row_col_offsets[direction][1]
         for ch in word:
@@ -122,7 +124,7 @@ class WordSearch:
 
     # add the words to the board
     # return True if success
-    def add_words(self, words):
+    def add_words(self, words: numpy.ndarray) -> bool:
 
         # words tend to fit easier if long words are added first
         word: str
@@ -136,7 +138,7 @@ class WordSearch:
     # -------------------------------------------------------------
 
     # print the board
-    def print_board(self, margin):
+    def print_board(self, margin: int) -> None:
         for row in range(self.rows):
             for i in range(margin):
                 print('', end=' ')
@@ -146,7 +148,7 @@ class WordSearch:
 
     # -------------------------------------------------------------
 
-    def print_words(self, word_width, num_columns):
+    def print_words(self, word_width: int, num_columns: int) -> None:
 
         col = 0
         for word in self.words:
