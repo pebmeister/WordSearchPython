@@ -6,13 +6,21 @@ Created on Mon Jul 22 13:20:11 2024
 """
 import random
 import argparse
-
 import numpy
 import numpy as np
 
 
 class WordSearch:
+    rows: int
+    cols: int
+    words: numpy.array(str)
+    board: numpy.array(str)
+    dir_list: list
+    row_list: list
+    col_list: list
+    error: bool
     failed_word: str
+    row_col_offsets: list
 
     # initialize
     def __init__(self, rows: int, cols: int, words: list) -> None:
@@ -20,9 +28,9 @@ class WordSearch:
         self.cols = cols
         self.words = np.array(words)
         self.board = np.eye(rows, cols, dtype=np.str_)
-        self.dir_array = list(range(8))
-        self.row_array = list(range(rows))
-        self.col_array = list(range(cols))
+        self.dir_list = list(range(8))
+        self.row_list = list(range(rows))
+        self.col_list = list(range(cols))
         self.error = False
         self.failed_word = ''
 
@@ -105,13 +113,13 @@ class WordSearch:
 
     # add one word to the board in a random location and direction
     def add_word(self, word: str) -> bool:
-        random.shuffle(self.row_array)
-        random.shuffle(self.col_array)
-        random.shuffle(self.dir_array)
+        random.shuffle(self.row_list)
+        random.shuffle(self.col_list)
+        random.shuffle(self.dir_list)
 
-        for row in self.row_array:
-            for col in self.col_array:
-                for d in self.dir_array:
+        for row in self.row_list:
+            for col in self.col_list:
+                for d in self.dir_list:
                     if self.word_fits(word, row, col, d):
                         self.place_word(word, row, col, d)
                         return True
